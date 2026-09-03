@@ -1,62 +1,92 @@
-<div align="center">
-    <h1><b>Docmost</b></h1>
-    <p>
-        Open-source collaborative wiki and documentation software.
-        <br />
-        <a href="https://docmost.com"><strong>Website</strong></a> | 
-        <a href="https://docmost.com/docs"><strong>Documentation</strong></a> |
-        <a href="https://twitter.com/DocmostHQ"><strong>Twitter / X</strong></a>
-    </p>
-</div>
-<br />
+# Docmost Nect Patch
 
-## Getting started
+Docmost Community Editionへ、複数のユーザー所有スペースと共有機能を
+追加した非公式コミュニティ派生版です。
 
-To get started with Docmost, please refer to our [documentation](https://docmost.com/docs) or try our [cloud version](https://docmost.com/pricing) .
+> [!IMPORTANT]
+> このプロジェクトはDocmost公式製品ではなく、Docmost, Inc.による
+> サポートや承認を受けたものではありません。
+> 元プロジェクトは[docmost/docmost](https://github.com/docmost/docmost)です。
 
-## Features
+[最新リリース](https://github.com/Iron-Color/docmost-nect-patch/releases/latest) |
+[Dockerイメージ](https://github.com/users/Iron-Color/packages/container/package/docmost-nect-patch) |
+[変更内容](NOTICE.md) |
+[ライセンス](LICENSE)
 
-- Real-time collaboration
-- Diagrams (Draw.io, Excalidraw and Mermaid)
-- Spaces
-- Permissions management
-- Groups
-- Comments
-- Page history
-- Search
-- File attachments
-- Embeds (Airtable, Loom, Miro and more)
-- Translations (10+ languages)
+## この派生版で追加した機能
 
-### Screenshots
+| 機能 | 内容 |
+| --- | --- |
+| 複数のユーザー所有スペース | 管理者以外のワークスペースメンバーも複数作成できます |
+| メンバー共有 | 既存のスペース権限を使って、ほかのメンバーやグループを招待できます |
+| 所有者の保護 | 作成者をスペースから削除したり、管理権限を外したりできません |
+| ソースコード表示 | ログイン画面や公開共有ページを含む全画面から、稼働中バージョンのソースへ移動できます |
+| 再現可能なリリース | Dockerイメージ、Gitタグ、ソースコミットを同じSHAへ固定します |
+| 秘密情報検査 | プッシュとPull RequestのたびにGitleaksを実行します |
 
-<p align="center">
-<img alt="home" src="https://docmost.com/screenshots/home.png" width="70%">
-<img alt="editor" src="https://docmost.com/screenshots/editor.png" width="70%">
-</p>
+リアルタイム共同編集、Draw.io、Excalidraw、Mermaid、通常スペース、
+検索、履歴、コメントなど、Docmost Community Edition本来の機能も利用できます。
 
-### License
-Docmost core is licensed under the open-source AGPL 3.0 license.  
-Enterprise features are available under an enterprise license (Enterprise Edition).  
+## 現在のリリース
 
-All files in the following directories are licensed under the Docmost Enterprise license defined in `packages/ee/License`.
-  - apps/server/src/ee
-  - apps/client/src/ee
-  - packages/ee
+- バージョン: [v0.95.0-user-spaces.1](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.95.0-user-spaces.1)
+- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.95.0-user-spaces.1
+- 対応CPU: linux/amd64、linux/arm64
+- ベースにした公式コミット: [5b854645](https://github.com/docmost/docmost/commit/5b854645615026d642c5e1735a3eafc59a3211f2)
 
-### Contributing
+本番環境では、タグよりも次の固定ダイジェストを推奨します。
 
-See the [development documentation](https://docmost.com/docs/self-hosting/development)
+    ghcr.io/iron-color/docmost-nect-patch@sha256:ef8c82b0371814fd769fa2517d9d85024301a22b2537ece678fd9ecf134995a0
 
-## Thanks
-Special thanks to;
+## 既存環境への導入
 
-<img width="100" alt="Crowdin" src="https://github.com/user-attachments/assets/a6c3d352-e41b-448d-b6cd-3fbca3109f07" />
+既存のデータベースと添付ファイル用Volumeを維持し、docmostサービスの
+イメージだけを上記イメージへ変更します。データベース変更は起動時に
+自動適用されます。
 
-[Crowdin](https://crowdin.com/) for providing access to their localization platform.
+バックアップを含む手順は[既存環境への導入ガイド](docs/DEPLOYMENT.md)を
+参照してください。
 
+## 公式Docmostの更新について
 
-<img width="48" alt="Algolia-mark-square-white" src="https://github.com/user-attachments/assets/6ccad04a-9589-4965-b6a1-d5cb1f4f9e94" />
+公式更新は、公開された瞬間に本番環境へ自動適用されるわけではありません。
+このリポジトリでは毎日公式のmainブランチを確認し、更新がある場合は
+同期用Pull Requestを自動作成します。
 
-[Algolia](https://www.algolia.com/) for providing full-text search to the docs.
+Pull Requestに対して競合解消、ビルド、テストを行い、安全を確認してから
+mainへ反映して新しいDockerイメージをリリースします。この方式なら公式更新を
+早く取り込める一方、独自機能が壊れた状態で自動配布されることを防げます。
+
+詳しくは[公式更新の取り込み手順](docs/UPSTREAM_SYNC.md)を参照してください。
+
+## 開発
+
+ローカルリポジトリでは次のリモート構成を使用します。
+
+    origin    https://github.com/Iron-Color/docmost-nect-patch.git
+    upstream  https://github.com/docmost/docmost.git
+
+基本的なビルドおよびテスト:
+
+    corepack pnpm install
+    corepack pnpm --filter @docmost/editor-ext run build
+    corepack pnpm --filter ./apps/server run build
+    corepack pnpm --filter ./apps/client run build
+    corepack pnpm --filter ./apps/server run test --runInBand
+
+## ライセンス
+
+Docmost coreと、この派生版で追加したコードはGNU Affero General Public
+License v3の対象です。元のLICENSEは変更せず維持しています。
+
+apps/server/src/ee、apps/client/src/ee、packages/eeにある公式Enterprise
+Editionのファイルには、それぞれのDocmost Enterprise Licenseが適用されます。
+詳細は[NOTICE.md](NOTICE.md)と各ディレクトリのライセンスを確認してください。
+
+## 免責
+
+これは初期リリースです。本番更新前にPostgreSQLと添付ファイルを
+必ずバックアップしてください。不具合報告は
+[このリポジトリのIssues](https://github.com/Iron-Color/docmost-nect-patch/issues)
+へお願いします。
 
