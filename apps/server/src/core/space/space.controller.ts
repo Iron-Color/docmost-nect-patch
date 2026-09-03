@@ -148,6 +148,23 @@ export class SpaceController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Post('create-personal')
+  @OAuthScope('write')
+  createPersonalSpace(
+    @Body() createSpaceDto: CreateSpaceDto,
+    @AuthUser() user: User,
+    @AuthWorkspace() workspace: Workspace,
+  ) {
+    return this.spaceService.createSpace(
+      user,
+      workspace.id,
+      createSpaceDto,
+      undefined,
+      { isUserOwned: true },
+    );
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Post('update')
   @OAuthScope('write')
   async updateSpace(

@@ -20,6 +20,7 @@ import {
   getSpaces,
   removeSpaceMember,
   createSpace,
+  createPersonalSpace,
   updateSpace,
   deleteSpace,
 } from "@/features/space/services/space-service.ts";
@@ -88,6 +89,23 @@ export function useCreateSpaceMutation() {
         queryKey: ["spaces"],
       });
       notifications.show({ message: t("Space created successfully") });
+    },
+    onError: (error) => {
+      const errorMessage = error["response"]?.data?.message;
+      notifications.show({ message: errorMessage, color: "red" });
+    },
+  });
+}
+
+export function useCreatePersonalSpaceMutation() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation<ISpace, Error, Partial<ISpace>>({
+    mutationFn: (data) => createPersonalSpace(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["spaces"] });
+      notifications.show({ message: t("Personal space created successfully") });
     },
     onError: (error) => {
       const errorMessage = error["response"]?.data?.message;

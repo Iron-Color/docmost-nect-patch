@@ -10,6 +10,7 @@ import {
   IconBrush,
   IconCheck,
   IconChevronDown,
+  IconCode,
   IconDeviceDesktop,
   IconLogout,
   IconMoon,
@@ -20,7 +21,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import { getSpaceUrl } from "@/lib/config.ts";
+import { getSourceCodeUrl, getSpaceUrl } from "@/lib/config.ts";
 import { useHasFeature } from "@/ee/hooks/use-feature";
 import { Feature } from "@/ee/features";
 import { usePersonalSpaceQuery } from "@/ee/personal-space/queries/personal-space-query";
@@ -42,6 +43,7 @@ export default function TopMenu() {
 
   const user = currentUser?.user;
   const workspace = currentUser?.workspace;
+  const sourceCodeUrl = getSourceCodeUrl();
 
   const hasPersonalSpaces = useHasFeature(Feature.PERSONAL_SPACES);
   const settingEnabled = workspace?.settings?.spaces?.allowPersonal === true;
@@ -130,6 +132,18 @@ export default function TopMenu() {
         >
           {t("My preferences")}
         </Menu.Item>
+
+        {sourceCodeUrl && (
+          <Menu.Item
+            component="a"
+            href={sourceCodeUrl}
+            target="_blank"
+            rel="noreferrer"
+            leftSection={<IconCode size={16} />}
+          >
+            {t("Source code")}
+          </Menu.Item>
+        )}
 
         {personalSpace ? (
           <Menu.Item

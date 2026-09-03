@@ -249,6 +249,12 @@ export class SpaceMemberService {
       throw new NotFoundException('Space membership not found');
     }
 
+    if (space.isUserOwned && dto.userId === space.creatorId) {
+      throw new BadRequestException(
+        'The owner of a personal space cannot be removed',
+      );
+    }
+
     if (spaceMember.role === SpaceRole.ADMIN) {
       await this.validateLastAdmin(dto.spaceId);
     }
@@ -333,6 +339,16 @@ export class SpaceMemberService {
 
     if (!spaceMember) {
       throw new NotFoundException('Space membership not found');
+    }
+
+    if (
+      space.isUserOwned &&
+      dto.userId === space.creatorId &&
+      dto.role !== SpaceRole.ADMIN
+    ) {
+      throw new BadRequestException(
+        'The owner of a personal space must keep full access',
+      );
     }
 
     if (spaceMember.role === dto.role) {

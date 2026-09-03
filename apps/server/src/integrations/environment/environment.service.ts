@@ -45,6 +45,14 @@ export class EnvironmentService {
     return this.configService.get<string>('APP_SECRET');
   }
 
+  getSourceCodeUrl(): string {
+    return this.configService.get<string>('SOURCE_CODE_URL');
+  }
+
+  getSourceCodeRevision(): string {
+    return this.configService.get<string>('SOURCE_CODE_REVISION');
+  }
+
   getDatabaseURL(): string {
     return this.configService.get<string>('DATABASE_URL');
   }

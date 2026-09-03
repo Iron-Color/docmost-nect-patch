@@ -45,6 +45,14 @@ export class EnvironmentVariables {
   @IsNotIn(['REPLACE_WITH_LONG_SECRET'])
   APP_SECRET: string;
 
+  @IsNotEmpty()
+  @IsUrl({ protocols: ['http', 'https'], require_tld: false })
+  SOURCE_CODE_URL: string;
+
+  @IsOptional()
+  @IsString()
+  SOURCE_CODE_REVISION: string;
+
   @IsOptional()
   @IsIn(['smtp', 'postmark'])
   MAIL_DRIVER: string;

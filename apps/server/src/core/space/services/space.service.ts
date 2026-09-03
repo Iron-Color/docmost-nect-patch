@@ -48,7 +48,7 @@ export class SpaceService {
     workspaceId: string,
     createSpaceDto: CreateSpaceDto,
     trx?: KyselyTransaction,
-    options?: { isPersonal?: boolean },
+    options?: { isPersonal?: boolean; isUserOwned?: boolean },
   ): Promise<Space> {
     let space = null;
 
@@ -96,7 +96,7 @@ export class SpaceService {
     workspaceId: string,
     createSpaceDto: CreateSpaceDto,
     trx?: KyselyTransaction,
-    options?: { isPersonal?: boolean },
+    options?: { isPersonal?: boolean; isUserOwned?: boolean },
   ): Promise<Space> {
     const slugExists = await this.spaceRepo.slugExists(
       createSpaceDto.slug,
@@ -117,6 +117,7 @@ export class SpaceService {
         workspaceId: workspaceId,
         slug: createSpaceDto.slug,
         isPersonal: options?.isPersonal ?? false,
+        isUserOwned: options?.isUserOwned ?? false,
       },
       trx,
     );

@@ -1337,5 +1337,6 @@
   "AI Chat can search and read workspace content, but cannot create or edit pages.": "AIチャットはワークスペースのコンテンツを検索および閲覧できますが、ページの作成や編集はできません。",
   "Toggle AI Chat read-only mode": "AIチャットの読み取り専用モードを切り替え",
   "Title only": "タイトルのみ",
-  "you": "あなた"
+  "you": "あなた",
+  "Source code": "ソースコード"
 }

@@ -1,5 +1,17 @@
+ARG SOURCE_CODE_URL
+ARG SOURCE_CODE_REVISION
+
 FROM node:26-slim AS base
-LABEL org.opencontainers.image.source="https://github.com/docmost/docmost"
+
+ARG SOURCE_CODE_URL
+ARG SOURCE_CODE_REVISION
+
+LABEL org.opencontainers.image.source="${SOURCE_CODE_URL}" \
+      org.opencontainers.image.revision="${SOURCE_CODE_REVISION}" \
+      org.opencontainers.image.licenses="AGPL-3.0-only"
+
+ENV SOURCE_CODE_URL="${SOURCE_CODE_URL}" \
+    SOURCE_CODE_REVISION="${SOURCE_CODE_REVISION}"
 
 RUN npm install -g pnpm@11.23.0
 

@@ -1,6 +1,10 @@
 .env
 .env.dev
 .env.prod
+.env.*
+!.env.example
+*.pem
+*.key
 data
 # compiled output
 dist
@@ -41,3 +45,7 @@ lerna-debug.log*
 .nx
 .nx/installation
 .nx/cache
+
+# Workspace-local package manager caches
+/.corepack
+/.pnpm-home

@@ -5,6 +5,7 @@ import { zod4Resolver } from "mantine-form-zod-resolver";
 import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
 import { useCreateSpaceMutation } from "@/features/space/queries/space-query.ts";
+import { useCreatePersonalSpaceMutation } from "@/features/space/queries/space-query.ts";
 import { computeSpaceSlug } from "@/lib";
 import { getSpaceUrl } from "@/lib/config.ts";
 import { useTranslation } from "react-i18next";
@@ -24,9 +25,10 @@ const formSchema = z.object({
 });
 type FormValues = z.infer<typeof formSchema>;
 
-export function CreateSpaceForm() {
+export function CreateSpaceForm({ personal = false }: { personal?: boolean }) {
   const { t } = useTranslation();
   const createSpaceMutation = useCreateSpaceMutation();
+  const createPersonalSpaceMutation = useCreatePersonalSpaceMutation();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -65,7 +67,10 @@ export function CreateSpaceForm() {
       description: data.description,
     };
 
-    const createdSpace = await createSpaceMutation.mutateAsync(spaceData);
+    const mutation = personal
+      ? createPersonalSpaceMutation
+      : createSpaceMutation;
+    const createdSpace = await mutation.mutateAsync(spaceData);
     navigate(getSpaceUrl(createdSpace.slug));
   };
 

@@ -1,6 +1,11 @@
 services:
   docmost:
-    image: docmost/docmost:latest
+    image: docmost-user-spaces:local
+    build:
+      context: .
+      args:
+        SOURCE_CODE_URL: '${SOURCE_CODE_URL:?Set SOURCE_CODE_URL to the exact source tag or commit}'
+        SOURCE_CODE_REVISION: '${SOURCE_CODE_REVISION:-development}'
     depends_on:
       - db
       - redis
@@ -9,6 +14,8 @@ services:
       APP_SECRET: 'REPLACE_WITH_LONG_SECRET'
       DATABASE_URL: 'postgresql://docmost:STRONG_DB_PASSWORD@db:5432/docmost'
       REDIS_URL: 'redis://redis:6379'
+      SOURCE_CODE_URL: '${SOURCE_CODE_URL:?Set SOURCE_CODE_URL to the exact source tag or commit}'
+      SOURCE_CODE_REVISION: '${SOURCE_CODE_REVISION:-development}'
     ports:
       - "3000:3000"
     restart: unless-stopped

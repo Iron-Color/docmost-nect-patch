@@ -369,6 +369,7 @@ export interface Spaces {
   description: string | null;
   id: Generated<string>;
   isPersonal: Generated<boolean>;
+  isUserOwned: Generated<boolean>;
   logo: string | null;
   name: string | null;
   settings: Json | null;

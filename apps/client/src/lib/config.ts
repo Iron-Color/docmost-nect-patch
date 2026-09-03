@@ -21,6 +21,14 @@ export function getServerAppUrl(): string {
   return getConfigValue("APP_URL");
 }
 
+export function getSourceCodeUrl(): string {
+  return getConfigValue("SOURCE_CODE_URL");
+}
+
+export function getSourceCodeRevision(): string {
+  return getConfigValue("SOURCE_CODE_REVISION");
+}
+
 export function getBackendUrl(): string {
   return getAppUrl() + "/api";
 }

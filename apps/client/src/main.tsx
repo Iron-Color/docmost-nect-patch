@@ -22,6 +22,7 @@ import {
   isPostHogEnabled,
 } from "@/lib/config.ts";
 import posthog from "posthog-js";
+import { SourceCodeLink } from "@/components/ui/source-code-link.tsx";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +56,7 @@ root.render(
           <HelmetProvider>
             <PostHogProvider client={posthog}>
               <App />
+              <SourceCodeLink />
             </PostHogProvider>
           </HelmetProvider>
         </QueryClientProvider>

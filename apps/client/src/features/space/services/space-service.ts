@@ -27,6 +27,13 @@ export async function createSpace(data: Partial<ISpace>): Promise<ISpace> {
   return req.data;
 }
 
+export async function createPersonalSpace(
+  data: Partial<ISpace>,
+): Promise<ISpace> {
+  const req = await api.post<ISpace>("/spaces/create-personal", data);
+  return req.data;
+}
+
 export async function updateSpace(data: Partial<ISpace>): Promise<ISpace> {
   const req = await api.post<ISpace>("/spaces/update", data);
   return req.data;
