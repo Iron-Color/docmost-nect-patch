@@ -54,6 +54,14 @@ export class EnvironmentVariables {
   SOURCE_CODE_REVISION: string;
 
   @IsOptional()
+  @IsString()
+  DISCORD_OAUTH_CLIENT_ID: string;
+
+  @IsOptional()
+  @IsString()
+  DISCORD_OAUTH_CLIENT_SECRET: string;
+
+  @IsOptional()
   @IsIn(['smtp', 'postmark'])
   MAIL_DRIVER: string;
 
@@ -140,7 +148,9 @@ export class EnvironmentVariables {
   TURBOPUFFER_REGION: string;
 
   @IsOptional()
-  @ValidateIf((obj) => obj.TURBOPUFFER_BASE_URL != '' && obj.TURBOPUFFER_BASE_URL != null)
+  @ValidateIf(
+    (obj) => obj.TURBOPUFFER_BASE_URL != '' && obj.TURBOPUFFER_BASE_URL != null,
+  )
   @IsUrl({ protocols: ['http', 'https'], require_tld: false })
   TURBOPUFFER_BASE_URL: string;
 

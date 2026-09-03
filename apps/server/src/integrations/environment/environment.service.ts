@@ -53,6 +53,14 @@ export class EnvironmentService {
     return this.configService.get<string>('SOURCE_CODE_REVISION');
   }
 
+  getDiscordOAuthClientId(): string {
+    return this.configService.get<string>('DISCORD_OAUTH_CLIENT_ID');
+  }
+
+  getDiscordOAuthClientSecret(): string {
+    return this.configService.get<string>('DISCORD_OAUTH_CLIENT_SECRET');
+  }
+
   getDatabaseURL(): string {
     return this.configService.get<string>('DATABASE_URL');
   }

@@ -28,8 +28,9 @@ docmostサービスにbuild設定がある場合は削除します。
     docker compose ps
     docker compose logs --tail=100 docmost
 
-起動時にis_user_owned列と索引が自動追加されます。既存のスペースは通常スペースの
-ままで、ページ、ユーザー、権限、添付ファイルは維持されます。
+起動時にis_user_owned列、Discord登録用テーブルと索引が自動追加されます。
+既存のスペースは通常スペースのままで、ページ、ユーザー、権限、添付ファイルは
+維持されます。
 
 更新後、一般ユーザーでログインし、Spaces画面にCreate personal spaceが
 表示されることを確認してください。
@@ -41,4 +42,3 @@ docmostサービスにbuild設定がある場合は削除します。
 参照されないため、そのまま残して構いません。
 
 データ用Volumeを削除するため、docker compose down -vは実行しないでください。
-

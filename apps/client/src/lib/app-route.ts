@@ -14,6 +14,7 @@ const APP_ROUTE = {
     MFA_CHALLENGE: "/login/mfa",
     MFA_SETUP_REQUIRED: "/login/mfa/setup",
     VERIFY_EMAIL: "/verify-email",
+    DISCORD_REGISTER: "/register/discord",
   },
   SETTINGS: {
     ACCOUNT: {
@@ -27,6 +28,7 @@ const APP_ROUTE = {
       SPACES: "/settings/spaces",
       BILLING: "/settings/billing",
       SECURITY: "/settings/security",
+      DISCORD_REGISTRATION: "/settings/discord-registration",
     },
   },
 };

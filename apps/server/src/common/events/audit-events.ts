@@ -5,6 +5,8 @@ export const AuditEvent = {
   WORKSPACE_INVITE_CREATED: 'workspace.invite_created',
   WORKSPACE_INVITE_RESENT: 'workspace.invite_resent',
   WORKSPACE_INVITE_REVOKED: 'workspace.invite_revoked',
+  DISCORD_REGISTRATION_CONFIG_CREATED: 'discord_registration.config_created',
+  DISCORD_REGISTRATION_CONFIG_DELETED: 'discord_registration.config_deleted',
 
   // User
   USER_CREATED: 'user.created',
@@ -116,7 +118,7 @@ export const EXCLUDED_AUDIT_EVENTS: Set<string> = new Set([
   AuditEvent.COMMENT_UPDATED,
   AuditEvent.COMMENT_RESOLVED,
   AuditEvent.COMMENT_REOPENED,
-  AuditEvent.ATTACHMENT_UPLOADED
+  AuditEvent.ATTACHMENT_UPLOADED,
 ]);
 
 export const AuditResource = {
@@ -134,6 +136,7 @@ export const AuditResource = {
   SCIM_TOKEN: 'scim_token',
   SSO_PROVIDER: 'sso_provider',
   WORKSPACE_INVITATION: 'workspace_invitation',
+  DISCORD_REGISTRATION_CONFIG: 'discord_registration_config',
   ATTACHMENT: 'attachment',
   LICENSE: 'license',
 } as const;

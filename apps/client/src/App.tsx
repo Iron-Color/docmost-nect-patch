@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useRedirectToCloudSelect } from "@/ee/hooks/use-redirect-to-cloud-select.tsx";
 import { useTrackOrigin } from "@/hooks/use-track-origin";
 
-
 const SetupWorkspace = lazy(() => import("@/pages/auth/setup-workspace.tsx"));
 const LoginPage = lazy(() => import("@/pages/auth/login"));
 const Home = lazy(() => import("@/pages/dashboard/home"));
@@ -30,6 +29,9 @@ const AccountPreferences = lazy(
 const SpaceHome = lazy(() => import("@/pages/space/space-home.tsx"));
 const PageRedirect = lazy(() => import("@/pages/page/page-redirect.tsx"));
 const InviteSignup = lazy(() => import("@/pages/auth/invite-signup.tsx"));
+const DiscordRegistration = lazy(
+  () => import("@/pages/auth/discord-registration.tsx"),
+);
 const ForgotPassword = lazy(() => import("@/pages/auth/forgot-password.tsx"));
 const PasswordReset = lazy(() => import("./pages/auth/password-reset"));
 const Billing = lazy(() => import("@/ee/billing/pages/billing.tsx"));
@@ -75,6 +77,9 @@ const AiChat = lazy(() => import("@/ee/ai-chat/pages/ai-chat.tsx"));
 const VerifyEmail = lazy(() => import("@/ee/pages/verify-email.tsx"));
 const LabelPage = lazy(() => import("@/pages/label/label-page"));
 const OAuthConsent = lazy(() => import("@/ee/oauth/pages/oauth-consent.tsx"));
+const DiscordRegistrationSettings = lazy(
+  () => import("@/pages/settings/workspace/discord-registration-settings.tsx"),
+);
 
 export default function App() {
   const { t } = useTranslation();
@@ -93,6 +98,7 @@ export default function App() {
         <Route index element={<Navigate to="/home" />} />
         <Route path={"/login"} element={<LoginPage />} />
         <Route path={"/invites/:invitationId"} element={<InviteSignup />} />
+        <Route path={"/register/discord"} element={<DiscordRegistration />} />
         <Route path={"/forgot-password"} element={<ForgotPassword />} />
         <Route path={"/password-reset"} element={<PasswordReset />} />
         <Route path={"/login/mfa"} element={<MfaChallengePage />} />
@@ -131,16 +137,10 @@ export default function App() {
           <Route path={"/favorites"} element={<FavoritesPage />} />
           <Route path={"/labels/:labelName"} element={<LabelPage />} />
           <Route path={"/templates"} element={<TemplateList />} />
-          <Route
-            path={"/templates/:templateId"}
-            element={<TemplateEditor />}
-          />
+          <Route path={"/templates/:templateId"} element={<TemplateEditor />} />
           <Route path={"/s/:spaceSlug"} element={<SpaceHome />} />
           <Route path={"/s/:spaceSlug/trash"} element={<SpaceTrash />} />
-          <Route
-            path={"/s/:spaceSlug/p/:pageSlug"}
-            element={<Page />}
-          />
+          <Route path={"/s/:spaceSlug/p/:pageSlug"} element={<Page />} />
 
           <Route path={"/base/:pageId"} element={<BasePage />} />
 
@@ -163,6 +163,10 @@ export default function App() {
             <Route path={"spaces"} element={<Spaces />} />
             <Route path={"sharing"} element={<Shares />} />
             <Route path={"security"} element={<Security />} />
+            <Route
+              path={"discord-registration"}
+              element={<DiscordRegistrationSettings />}
+            />
             <Route path={"ai"} element={<AiSettings />} />
             <Route path={"ai/mcp"} element={<AiSettings />} />
             <Route path={"audit"} element={<AuditLogs />} />

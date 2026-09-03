@@ -219,6 +219,43 @@ export interface Comments {
   workspaceId: string;
 }
 
+export interface DiscordAccountLinks {
+  createdAt: Generated<Timestamp>;
+  discordUserId: string;
+  guildId: string;
+  id: Generated<string>;
+  roleId: string;
+  userId: string;
+  workspaceId: string;
+}
+
+export interface DiscordRegistrationAttempts {
+  completedAt: Timestamp | null;
+  createdAt: Generated<Timestamp>;
+  discordEmail: string | null;
+  discordName: string | null;
+  discordUserId: string | null;
+  expiresAt: Timestamp;
+  id: Generated<string>;
+  matchedGuildId: string | null;
+  matchedRoleId: string | null;
+  registrationTokenHash: string | null;
+  stateHash: string | null;
+  verifiedAt: Timestamp | null;
+  workspaceId: string;
+}
+
+export interface DiscordRegistrationConfigs {
+  createdAt: Generated<Timestamp>;
+  creatorId: string | null;
+  guildId: string;
+  id: Generated<string>;
+  label: string;
+  roleId: string;
+  updatedAt: Generated<Timestamp>;
+  workspaceId: string;
+}
+
 export interface Favorites {
   id: Generated<string>;
   userId: string;
@@ -708,6 +745,9 @@ export interface DB {
   baseViews: BaseViews;
   billing: Billing;
   comments: Comments;
+  discordAccountLinks: DiscordAccountLinks;
+  discordRegistrationAttempts: DiscordRegistrationAttempts;
+  discordRegistrationConfigs: DiscordRegistrationConfigs;
   favorites: Favorites;
   fileTasks: FileTasks;
   groups: Groups;

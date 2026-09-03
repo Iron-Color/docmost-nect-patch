@@ -15,6 +15,7 @@ import {
   IconSparkles,
   IconHistory,
   IconShieldCheck,
+  IconBrandDiscord,
 } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 import classes from "./settings.module.css";
@@ -81,6 +82,13 @@ const groupedData: DataGroup[] = [
     items: [
       { label: "General", icon: IconSettings, path: "/settings/workspace" },
       { label: "Members", icon: IconUsers, path: "/settings/members" },
+      {
+        label: "Discord registration",
+        icon: IconBrandDiscord,
+        path: "/settings/discord-registration",
+        role: "admin",
+        env: "selfhosted",
+      },
       {
         label: "Billing",
         icon: IconCoin,

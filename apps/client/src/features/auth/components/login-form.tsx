@@ -22,11 +22,11 @@ import { useWorkspacePublicDataQuery } from "@/features/workspace/queries/worksp
 import { Error404 } from "@/components/ui/error-404.tsx";
 import React from "react";
 import { AuthLayout } from "./auth-layout.tsx";
+import { IconBrandDiscord } from "@tabler/icons-react";
+import { useDiscordRegistrationStatusQuery } from "@/features/discord-registration/discord-registration.query";
 
 const formSchema = z.object({
-  email: z
-    .email()
-    .min(1, { message: "email is required" }),
+  email: z.email().min(1, { message: "email is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 type FormValues = z.infer<typeof formSchema>;
@@ -41,6 +41,7 @@ export function LoginForm() {
     isError,
     error,
   } = useWorkspacePublicDataQuery();
+  const discordRegistrationStatus = useDiscordRegistrationStatusQuery();
 
   const form = useForm<FormValues>({
     validate: zod4Resolver(formSchema),
@@ -62,7 +63,7 @@ export function LoginForm() {
   }
 
   if (isDataLoading) {
-   return null;
+    return null;
   }
 
   if (isError && error?.["response"]?.status === 404) {
@@ -124,6 +125,19 @@ export function LoginForm() {
                   {t("Sign In")}
                 </Button>
               </form>
+
+              {discordRegistrationStatus.data?.enabled && (
+                <Button
+                  component={Link}
+                  to={APP_ROUTE.AUTH.DISCORD_REGISTER}
+                  variant="default"
+                  fullWidth
+                  mt="md"
+                  leftSection={<IconBrandDiscord size={20} />}
+                >
+                  {t("Create account with Discord")}
+                </Button>
+              )}
             </>
           )}
         </Box>
