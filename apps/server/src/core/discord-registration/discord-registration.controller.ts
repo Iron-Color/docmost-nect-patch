@@ -112,7 +112,10 @@ export class DiscordRegistrationController {
     const registrationPage = `${this.domainService.getUrl(workspace.hostname)}/register/discord`;
 
     if (query.error || !query.code) {
-      return res.redirect(`${registrationPage}?error=oauth_denied`);
+      return res.redirect(
+        `${registrationPage}?error=oauth_denied`,
+        HttpStatus.FOUND,
+      );
     }
 
     try {
@@ -123,11 +126,15 @@ export class DiscordRegistrationController {
       );
       return res.redirect(
         `${registrationPage}#token=${encodeURIComponent(token)}`,
+        HttpStatus.FOUND,
       );
     } catch (error) {
       const reason =
         error instanceof ForbiddenException ? 'not_eligible' : 'oauth_failed';
-      return res.redirect(`${registrationPage}?error=${reason}`);
+      return res.redirect(
+        `${registrationPage}?error=${reason}`,
+        HttpStatus.FOUND,
+      );
     }
   }
 
