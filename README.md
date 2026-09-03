@@ -30,14 +30,14 @@ Docmost Community Editionへ、複数のユーザー所有スペースと共有�
 
 ## 現在のリリース
 
-- バージョン: [v0.95.0-user-spaces.1](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.95.0-user-spaces.1)
-- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.95.0-user-spaces.1
+- バージョン: [v0.95.0-user-spaces.2](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.95.0-user-spaces.2)
+- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.95.0-user-spaces.2
 - 対応CPU: linux/amd64、linux/arm64
 - ベースにした公式コミット: [5b854645](https://github.com/docmost/docmost/commit/5b854645615026d642c5e1735a3eafc59a3211f2)
 
 本番環境では、タグよりも次の固定ダイジェストを推奨します。
 
-    ghcr.io/iron-color/docmost-nect-patch@sha256:ef8c82b0371814fd769fa2517d9d85024301a22b2537ece678fd9ecf134995a0
+    ghcr.io/iron-color/docmost-nect-patch@sha256:c1808313e4bd6285fb955286805f02d04554ce58e83d87c92252e4a4b6685313
 
 ## 既存環境への導入
 
