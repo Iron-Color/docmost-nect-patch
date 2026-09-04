@@ -22,7 +22,7 @@ describe('source code environment validation', () => {
     const environment = plainToInstance(EnvironmentVariables, {
       ...baseEnvironment,
       SOURCE_CODE_URL:
-        'https://github.com/example/docmost-user-spaces/tree/0123456789abcdef',
+        'https://github.com/example/docmost-nect-patch/tree/0123456789abcdef',
       SOURCE_CODE_REVISION: '0123456789abcdef',
     });
     const errors = validateSync(environment);

@@ -1,6 +1,6 @@
 services:
   docmost:
-    image: docmost-user-spaces:local
+    image: docmost-nect-patch:local
     build:
       context: .
       args:

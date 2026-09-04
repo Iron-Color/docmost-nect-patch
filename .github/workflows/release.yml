@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*-user-spaces.*"
+      - "v*-nect.*"
 
 permissions:
   contents: write

@@ -3,7 +3,8 @@
 Release tags and container images must identify the same Git commit.
 
 1. Merge the tested changes into the release branch.
-2. Create an annotated tag such as `v0.95.0-user-spaces.1` on that commit.
+2. Create an annotated tag such as `v0.95.0-nect.1` on that commit. The
+   `nect` suffix identifies this fork; feature names are not used in versions.
 3. Push the tag to GitHub.
 4. Wait for the Release workflow to publish the matching image to GitHub
    Container Registry and create the GitHub release.
