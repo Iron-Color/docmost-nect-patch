@@ -16,7 +16,7 @@ docmostサービスのimageを次の固定ダイジェストへ変更します�
 
     services:
       docmost:
-        image: ghcr.io/iron-color/docmost-nect-patch@sha256:74f1bcedf074eaa937dfcf818bae89be4d625bc3da12f1db39284ab9bf3deb47
+        image: ghcr.io/iron-color/docmost-nect-patch@sha256:01f59b46eec640a9ed9a996f685026f2882085a82c1680477a460fe50f83f7cf
 
 db、redis、volumes、APP_SECRET、データベースのパスワードは変更しません。
 docmostサービスにbuild設定がある場合は削除します。
