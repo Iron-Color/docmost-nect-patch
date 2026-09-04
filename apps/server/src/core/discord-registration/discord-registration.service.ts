@@ -83,7 +83,14 @@ export class DiscordRegistrationService {
   async getAdminInfo(workspace: Workspace) {
     const configs = await this.db
       .selectFrom('discordRegistrationConfigs')
-      .select(['id', 'label', 'guildId', 'roleId', 'createdAt'])
+      .select([
+        'id',
+        'label',
+        'guildId',
+        'roleIds',
+        'roleMatchMode',
+        'createdAt',
+      ])
       .where('workspaceId', '=', workspace.id)
       .orderBy('createdAt', 'asc')
       .execute();
@@ -112,17 +119,27 @@ export class DiscordRegistrationService {
       );
     }
 
+    const roleIds = [...dto.roleIds].sort();
+
     try {
       const config = await this.db
         .insertInto('discordRegistrationConfigs')
         .values({
           label: dto.label,
           guildId: dto.guildId,
-          roleId: dto.roleId,
+          roleIds,
+          roleMatchMode: dto.roleMatchMode,
           creatorId,
           workspaceId,
         })
-        .returning(['id', 'label', 'guildId', 'roleId', 'createdAt'])
+        .returning([
+          'id',
+          'label',
+          'guildId',
+          'roleIds',
+          'roleMatchMode',
+          'createdAt',
+        ])
         .executeTakeFirstOrThrow();
 
       this.auditService.log({
@@ -133,7 +150,8 @@ export class DiscordRegistrationService {
           after: {
             label: config.label,
             guildId: config.guildId,
-            roleId: config.roleId,
+            roleIds: config.roleIds,
+            roleMatchMode: config.roleMatchMode,
           },
         },
       });
@@ -142,7 +160,7 @@ export class DiscordRegistrationService {
     } catch (error: any) {
       if (error?.code === '23505') {
         throw new BadRequestException(
-          'This Discord server and role rule already exists',
+          'This Discord server, role set, and match mode rule already exists',
         );
       }
       throw error;
@@ -154,7 +172,7 @@ export class DiscordRegistrationService {
       .deleteFrom('discordRegistrationConfigs')
       .where('id', '=', configId)
       .where('workspaceId', '=', workspaceId)
-      .returning(['id', 'label', 'guildId', 'roleId'])
+      .returning(['id', 'label', 'guildId', 'roleIds', 'roleMatchMode'])
       .executeTakeFirst();
 
     if (!config) {
@@ -169,7 +187,8 @@ export class DiscordRegistrationService {
         before: {
           label: config.label,
           guildId: config.guildId,
-          roleId: config.roleId,
+          roleIds: config.roleIds,
+          roleMatchMode: config.roleMatchMode,
         },
       },
     });
@@ -254,7 +273,7 @@ export class DiscordRegistrationService {
 
     const configs = await this.db
       .selectFrom('discordRegistrationConfigs')
-      .select(['id', 'guildId', 'roleId'])
+      .select(['id', 'guildId', 'roleIds', 'roleMatchMode'])
       .where('workspaceId', '=', workspace.id)
       .execute();
 
@@ -287,8 +306,7 @@ export class DiscordRegistrationService {
         discordEmail: discordUser.email.toLowerCase(),
         discordName:
           discordUser.global_name || discordUser.username || 'Discord member',
-        matchedGuildId: matchedConfig.guildId,
-        matchedRoleId: matchedConfig.roleId,
+        matchedConfigId: matchedConfig.id,
         verifiedAt: new Date(),
         expiresAt: new Date(Date.now() + REGISTRATION_TTL_MS),
       })
@@ -337,8 +355,7 @@ export class DiscordRegistrationService {
           !attempt.verifiedAt ||
           !attempt.discordUserId ||
           !attempt.discordEmail ||
-          !attempt.matchedGuildId ||
-          !attempt.matchedRoleId ||
+          !attempt.matchedConfigId ||
           attempt.expiresAt <= new Date()
         ) {
           throw new BadRequestException(
@@ -346,14 +363,13 @@ export class DiscordRegistrationService {
           );
         }
 
-        const ruleStillExists = await trx
+        const matchedConfig = await trx
           .selectFrom('discordRegistrationConfigs')
-          .select('id')
+          .select(['guildId', 'roleIds', 'roleMatchMode'])
+          .where('id', '=', attempt.matchedConfigId)
           .where('workspaceId', '=', workspace.id)
-          .where('guildId', '=', attempt.matchedGuildId)
-          .where('roleId', '=', attempt.matchedRoleId)
           .executeTakeFirst();
-        if (!ruleStillExists) {
+        if (!matchedConfig) {
           throw new ForbiddenException(
             'The Discord registration rule is no longer active',
           );
@@ -407,8 +423,9 @@ export class DiscordRegistrationService {
           .insertInto('discordAccountLinks')
           .values({
             discordUserId: attempt.discordUserId,
-            guildId: attempt.matchedGuildId,
-            roleId: attempt.matchedRoleId,
+            guildId: matchedConfig.guildId,
+            roleIds: matchedConfig.roleIds,
+            roleMatchMode: matchedConfig.roleMatchMode,
             userId: newUser.id,
             workspaceId: workspace.id,
           })

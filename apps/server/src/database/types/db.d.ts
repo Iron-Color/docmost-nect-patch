@@ -30,6 +30,8 @@ export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type DiscordRoleMatchMode = 'any' | 'all';
+
 export interface ApiKeys {
   createdAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
@@ -224,7 +226,8 @@ export interface DiscordAccountLinks {
   discordUserId: string;
   guildId: string;
   id: Generated<string>;
-  roleId: string;
+  roleIds: string[];
+  roleMatchMode: DiscordRoleMatchMode;
   userId: string;
   workspaceId: string;
 }
@@ -237,8 +240,7 @@ export interface DiscordRegistrationAttempts {
   discordUserId: string | null;
   expiresAt: Timestamp;
   id: Generated<string>;
-  matchedGuildId: string | null;
-  matchedRoleId: string | null;
+  matchedConfigId: string | null;
   registrationTokenHash: string | null;
   stateHash: string | null;
   verifiedAt: Timestamp | null;
@@ -251,7 +253,8 @@ export interface DiscordRegistrationConfigs {
   guildId: string;
   id: Generated<string>;
   label: string;
-  roleId: string;
+  roleIds: string[];
+  roleMatchMode: DiscordRoleMatchMode;
   updatedAt: Generated<Timestamp>;
   workspaceId: string;
 }

@@ -6,7 +6,8 @@ export interface IDiscordRegistrationConfig {
   id: string;
   label: string;
   guildId: string;
-  roleId: string;
+  roleIds: string[];
+  roleMatchMode: "any" | "all";
   createdAt: Date;
 }
 
@@ -25,7 +26,8 @@ export interface IDiscordRegistrationSession {
 export interface ICreateDiscordRegistrationConfig {
   label: string;
   guildId: string;
-  roleId: string;
+  roleIds: string[];
+  roleMatchMode: "any" | "all";
 }
 
 export interface ICompleteDiscordRegistration {

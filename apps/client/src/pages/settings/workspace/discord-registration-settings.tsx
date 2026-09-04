@@ -6,8 +6,10 @@ import {
   Group,
   Loader,
   Paper,
+  SegmentedControl,
   Stack,
   Table,
+  TagsInput,
   Text,
   TextInput,
   Title,
@@ -35,7 +37,12 @@ const snowflakePattern = /^\d{17,20}$/;
 const formSchema = z.object({
   label: z.string().trim().min(1).max(60),
   guildId: z.string().regex(snowflakePattern),
-  roleId: z.string().regex(snowflakePattern),
+  roleIds: z
+    .array(z.string().regex(snowflakePattern))
+    .min(1)
+    .max(10)
+    .refine((roleIds) => new Set(roleIds).size === roleIds.length),
+  roleMatchMode: z.enum(["any", "all"]),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -47,7 +54,12 @@ export default function DiscordRegistrationSettings() {
   const deleteMutation = useDeleteDiscordRegistrationConfigMutation();
   const form = useForm<FormValues>({
     validate: zod4Resolver(formSchema),
-    initialValues: { label: "", guildId: "", roleId: "" },
+    initialValues: {
+      label: "",
+      guildId: "",
+      roleIds: [],
+      roleMatchMode: "any",
+    },
   });
 
   function handleSubmit(values: FormValues) {
@@ -117,7 +129,7 @@ export default function DiscordRegistrationSettings() {
 
         <Paper withBorder p="md">
           <Title order={3} size="h4" mb="md">
-            {t("Add allowed Discord server and role")}
+            {t("Add allowed Discord server and roles")}
           </Title>
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack>
@@ -136,13 +148,31 @@ export default function DiscordRegistrationSettings() {
                 inputMode="numeric"
                 {...form.getInputProps("guildId")}
               />
-              <TextInput
-                label={t("Discord role ID")}
-                description={t("Only members with this role can register")}
-                placeholder="123456789012345678"
-                inputMode="numeric"
-                {...form.getInputProps("roleId")}
+              <TagsInput
+                label={t("Discord role IDs")}
+                description={t("Enter one or more role IDs (up to 10)")}
+                placeholder={t("Enter a role ID and press Enter")}
+                splitChars={[",", " "]}
+                maxDropdownHeight={0}
+                maxTags={10}
+                {...form.getInputProps("roleIds")}
               />
+              <div>
+                <Text size="sm" fw={500} mb={4}>
+                  {t("Role match condition")}
+                </Text>
+                <Text size="xs" c="dimmed" mb={6}>
+                  {t("Choose whether members need any role or all roles")}
+                </Text>
+                <SegmentedControl
+                  fullWidth
+                  data={[
+                    { label: t("Any role (OR)"), value: "any" },
+                    { label: t("All roles (AND)"), value: "all" },
+                  ]}
+                  {...form.getInputProps("roleMatchMode")}
+                />
+              </div>
               <Group justify="flex-end">
                 <Button
                   type="submit"
@@ -161,13 +191,14 @@ export default function DiscordRegistrationSettings() {
             {t("Allowed Discord memberships")}
           </Title>
           {infoQuery.data?.configs.length ? (
-            <Table.ScrollContainer minWidth={600}>
+            <Table.ScrollContainer minWidth={760}>
               <Table>
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th>{t("Label")}</Table.Th>
                     <Table.Th>{t("Server ID")}</Table.Th>
-                    <Table.Th>{t("Role ID")}</Table.Th>
+                    <Table.Th>{t("Role IDs")}</Table.Th>
+                    <Table.Th>{t("Match condition")}</Table.Th>
                     <Table.Th aria-label={t("Action")} />
                   </Table.Tr>
                 </Table.Thead>
@@ -179,7 +210,18 @@ export default function DiscordRegistrationSettings() {
                         <Code>{config.guildId}</Code>
                       </Table.Td>
                       <Table.Td>
-                        <Code>{config.roleId}</Code>
+                        <Stack gap={4}>
+                          {config.roleIds.map((roleId) => (
+                            <Code key={roleId}>{roleId}</Code>
+                          ))}
+                        </Stack>
+                      </Table.Td>
+                      <Table.Td>
+                        {t(
+                          config.roleMatchMode === "all"
+                            ? "All roles (AND)"
+                            : "Any role (OR)",
+                        )}
                       </Table.Td>
                       <Table.Td>
                         <ActionIcon

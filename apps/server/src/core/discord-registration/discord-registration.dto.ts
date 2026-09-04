@@ -1,5 +1,10 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  ArrayUnique,
+  IsArray,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -24,9 +29,20 @@ export class CreateDiscordRegistrationConfigDto {
   @Matches(discordSnowflake, { message: 'Invalid Discord server ID' })
   guildId: string;
 
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(10)
+  @ArrayUnique()
+  @IsString({ each: true })
+  @Matches(discordSnowflake, {
+    each: true,
+    message: 'Invalid Discord role ID',
+  })
+  roleIds: string[];
+
   @IsString()
-  @Matches(discordSnowflake, { message: 'Invalid Discord role ID' })
-  roleId: string;
+  @IsIn(['any', 'all'])
+  roleMatchMode: 'any' | 'all';
 }
 
 export class DeleteDiscordRegistrationConfigDto {
