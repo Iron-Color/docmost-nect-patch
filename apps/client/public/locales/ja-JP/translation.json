@@ -1359,7 +1359,7 @@
   "Add allowed Discord server and role": "許可するDiscordサーバーとロールを追加",
   "Label": "表示名",
   "A name for administrators to recognize this rule": "管理者がこの設定を判別するための名前です",
-  "e.g. Main circle members": "例：サークル正規メンバー",
+  "e.g. Approved members": "例：登録許可メンバー",
   "Discord server ID": "DiscordサーバーID",
   "The Discord server (guild) ID": "Discordサーバー（Guild）のIDです",
   "Discord role ID": "DiscordロールID",

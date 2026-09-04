@@ -1359,7 +1359,7 @@
   "Add allowed Discord server and role": "Add allowed Discord server and role",
   "Label": "Label",
   "A name for administrators to recognize this rule": "A name for administrators to recognize this rule",
-  "e.g. Main circle members": "e.g. Main circle members",
+  "e.g. Approved members": "e.g. Approved members",
   "Discord server ID": "Discord server ID",
   "The Discord server (guild) ID": "The Discord server (guild) ID",
   "Discord role ID": "Discord role ID",

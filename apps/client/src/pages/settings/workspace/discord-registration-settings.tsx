@@ -126,7 +126,7 @@ export default function DiscordRegistrationSettings() {
                 description={t(
                   "A name for administrators to recognize this rule",
                 )}
-                placeholder={t("e.g. Main circle members")}
+                placeholder={t("e.g. Approved members")}
                 {...form.getInputProps("label")}
               />
               <TextInput
