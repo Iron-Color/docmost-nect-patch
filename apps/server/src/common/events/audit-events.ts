@@ -16,6 +16,7 @@ export const AuditEvent = {
   USER_ROLE_CHANGED: 'user.role_changed',
   USER_PASSWORD_CHANGED: 'user.password_changed',
   USER_PASSWORD_RESET: 'user.password_reset',
+  USER_PASSWORD_RESET_REQUESTED: 'user.password_reset_requested',
   USER_UPDATED: 'user.updated',
   USER_DEACTIVATED: 'user.deactivated',
   USER_ACTIVATED: 'user.activated',
@@ -71,6 +72,7 @@ export const AuditEvent = {
   PAGE_RESTRICTION_REMOVED: 'page.restriction_removed',
   PAGE_PERMISSION_ADDED: 'page.permission_added',
   PAGE_PERMISSION_REMOVED: 'page.permission_removed',
+  PAGE_PERMISSION_ROLE_CHANGED: 'page.permission_role_changed',
   // Page verification
   PAGE_VERIFICATION_CREATED: 'page.verification_created',
   PAGE_VERIFICATION_UPDATED: 'page.verification_updated',
@@ -106,6 +108,16 @@ export const AuditEvent = {
   // Attachment
   ATTACHMENT_UPLOADED: 'attachment.uploaded',
   // ATTACHMENT_DELETED: 'attachment.deleted',
+
+  // SIEM streaming
+  SIEM_DESTINATION_CREATED: 'siem_destination.created',
+  SIEM_DESTINATION_UPDATED: 'siem_destination.updated',
+  SIEM_DESTINATION_DELETED: 'siem_destination.deleted',
+  SIEM_DESTINATION_TEST: 'siem_destination.test',
+
+  // Template
+  TEMPLATE_CREATED: 'template.created',
+  TEMPLATE_DELETED: 'template.deleted',
 } as const;
 
 export type AuditEventType = (typeof AuditEvent)[keyof typeof AuditEvent];
@@ -119,6 +131,7 @@ export const EXCLUDED_AUDIT_EVENTS: Set<string> = new Set([
   AuditEvent.COMMENT_RESOLVED,
   AuditEvent.COMMENT_REOPENED,
   AuditEvent.ATTACHMENT_UPLOADED,
+  AuditEvent.SIEM_DESTINATION_TEST,
 ]);
 
 export const AuditResource = {
@@ -139,6 +152,8 @@ export const AuditResource = {
   DISCORD_REGISTRATION_CONFIG: 'discord_registration_config',
   ATTACHMENT: 'attachment',
   LICENSE: 'license',
+  SIEM_DESTINATION: 'siem_destination',
+  TEMPLATE: 'template',
 } as const;
 
 export type AuditResourceType =

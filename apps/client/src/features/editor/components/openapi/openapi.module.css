@@ -1,0 +1,30 @@
+.block {
+  margin: 1rem 0;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.block[data-selected] {
+  outline: 2px solid var(--mantine-primary-color-filled);
+}
+.header {
+  background: var(--mantine-color-default-hover);
+}
+.document {
+  background: white;
+  color: #3b4151;
+  max-height: 720px;
+  overflow: auto;
+  padding: 0 12px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+@media print {
+  .document {
+    max-height: none;
+    overflow: visible;
+  }
+}

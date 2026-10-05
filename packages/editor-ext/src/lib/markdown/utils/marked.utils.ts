@@ -11,6 +11,11 @@ import {
 
 marked.use({
   renderer: {
+    code({ text, lang }) {
+      if (lang?.trim() !== "openapi") return false;
+      const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return `<div data-type="openapi"><pre><code class="language-openapi">${escaped}</code></pre></div>\n`;
+    },
     list({ ordered, start, items }) {
       let body = "";
       for (const item of items) {
@@ -61,6 +66,11 @@ export function markdownToHtml(
     .trimStart();
 
   resetFootnotes();
-  const html = marked.parse(markdown).toString();
+  // marked always closes fenced code with a newline that the editor keeps as
+  // an empty trailing line inside the code block.
+  const html = marked
+    .parse(markdown)
+    .toString()
+    .replace(/\n<\/code><\/pre>/g, "</code></pre>");
   return html + renderFootnotesList();
 }

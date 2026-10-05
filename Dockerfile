@@ -13,7 +13,7 @@ LABEL org.opencontainers.image.source="${SOURCE_CODE_URL}" \
 ENV SOURCE_CODE_URL="${SOURCE_CODE_URL}" \
     SOURCE_CODE_REVISION="${SOURCE_CODE_REVISION}"
 
-RUN npm install -g pnpm@11.23.0
+RUN npm install -g pnpm@11.25.0
 
 FROM base AS builder
 

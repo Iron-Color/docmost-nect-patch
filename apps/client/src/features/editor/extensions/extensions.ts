@@ -1,6 +1,6 @@
 import { markInputRule } from "@tiptap/core";
 import { StarterKit } from "@tiptap/starter-kit";
-import { Document } from "@tiptap/extension-document";
+import { TiptapDocument } from "@/features/editor/extensions/document";
 import { Code } from "@tiptap/extension-code";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { TaskList, TaskItem } from "@tiptap/extension-list";
@@ -42,6 +42,7 @@ import {
   CustomCodeBlock,
   Drawio,
   Excalidraw,
+  OpenApi,
   Embed,
   TiptapPdf,
   PageBreak,
@@ -91,6 +92,7 @@ import AudioView from "@/features/editor/components/audio/audio-view.tsx";
 import AttachmentView from "@/features/editor/components/attachment/attachment-view.tsx";
 import CodeBlockView from "@/features/editor/components/code-block/code-block-view.tsx";
 import DrawioView from "../components/drawio/drawio-view";
+import OpenApiView from "../components/openapi/openapi-view-lazy";
 import ExcalidrawView from "@/features/editor/components/excalidraw/excalidraw-view-lazy.tsx";
 import EmbedView from "@/features/editor/components/embed/embed-view.tsx";
 import PdfView from "@/features/editor/components/pdf/pdf-view.tsx";
@@ -148,9 +150,7 @@ export const mainExtensions = [
     codeBlock: false,
     code: false,
   }),
-  Document.extend({
-    content: "block+ footnotes?",
-  }),
+  TiptapDocument,
   // Override TipTap's Code extension to fix the inline code input rule.
   // The upstream regex /(^|[^`])`([^`]+)`(?!`)$/ captures the character
   // before the opening backtick as part of the match, causing markInputRule
@@ -350,6 +350,11 @@ export const mainExtensions = [
   Selection,
   Attachment.configure({
     view: AttachmentView,
+  }),
+  OpenApi.extend({
+    addNodeView() {
+      return ReactNodeViewRenderer(OpenApiView);
+    },
   }),
   Drawio.configure({
     view: DrawioView,

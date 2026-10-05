@@ -1,11 +1,12 @@
 # 公式Docmost更新の取り込み
 
-この派生版は公式リポジトリの履歴を維持しているため、公式mainブランチの更新を
-通常のGitマージとして取り込めます。
+この派生版は公式リポジトリの履歴を維持しているため、公式リリースの更新を
+通常のGitマージとして取り込めます。自動同期の対象は最新の正式リリースです。
 
 ## 自動確認
 
-Sync upstream Workflowが毎日公式mainを確認します。
+Sync upstream Workflowが毎日公式の最新正式リリースを確認します。
+開発中のmainブランチやプレリリースは自動同期しません。
 
 - 更新がない場合は何もしません。
 - 競合せず取り込める場合はautomation/sync-upstreamブランチを更新し、
@@ -20,9 +21,11 @@ approve pull requestsを有効にしてください。
 
     git switch main
     git pull --ff-only origin main
-    git fetch upstream
+    git fetch upstream tag v0.96.0
     git switch -c chore/sync-upstream-YYYYMMDD
-    git merge upstream/main
+    git merge v0.96.0
+
+`v0.96.0`は取り込む正式リリースのタグへ置き換えます。
 
 競合が発生した場合は、特に次の領域を確認してください。
 

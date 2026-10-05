@@ -5,6 +5,7 @@ on:
     - cron: "17 18 * * *"
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - ".github/workflows/upstream-sync.yml"
 
@@ -29,10 +30,20 @@ jobs:
       - name: Check official repository
         id: upstream
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          latest_tag="$(gh release view --repo docmost/docmost --json tagName --jq .tagName)"
+          if [[ ! "$latest_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Unexpected official release tag: $latest_tag"
+            exit 1
+          fi
           git remote add upstream https://github.com/docmost/docmost.git
-          git fetch upstream main
-          if git merge-base --is-ancestor upstream/main HEAD; then
+          git fetch --no-tags upstream "refs/tags/$latest_tag"
+          release_sha="$(git rev-parse 'FETCH_HEAD^{commit}')"
+          echo "sha=$release_sha" >> "$GITHUB_OUTPUT"
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+          if git merge-base --is-ancestor "$release_sha" HEAD; then
             echo "updated=false" >> "$GITHUB_OUTPUT"
           else
             echo "updated=true" >> "$GITHUB_OUTPUT"
@@ -43,12 +54,14 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ steps.upstream.outputs.sha }}
+          RELEASE_TAG: ${{ steps.upstream.outputs.tag }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -C automation/sync-upstream
 
-          if ! git merge upstream/main --no-edit; then
+          if ! git merge "$RELEASE_SHA" --no-edit; then
             echo "::error::Official changes conflict with this fork. Resolve the merge manually."
             exit 1
           fi
@@ -66,7 +79,6 @@ jobs:
             gh pr create \
               --base main \
               --head automation/sync-upstream \
-              --title "chore: sync official Docmost updates" \
-              --body "Automated merge of the latest docmost/docmost main branch. Review conflicts, run builds and tests, and create a new downstream release before deployment."
+              --title "chore: sync Docmost $RELEASE_TAG" \
+              --body "Automated merge of official Docmost release $RELEASE_TAG. Review changes, run builds and tests, and create a new downstream release before deployment."
           fi
-
