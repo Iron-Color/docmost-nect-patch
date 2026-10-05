@@ -126,7 +126,7 @@ const groupedData: DataGroup[] = [
         role: "admin",
       },
       {
-        label: "Audit log",
+        label: "Audit logs & SIEM",
         icon: IconHistory,
         path: "/settings/audit",
         feature: Feature.AUDIT_LOGS,
@@ -227,7 +227,7 @@ export default function SettingsSidebar() {
             case "API management":
               prefetchHandler = prefetchApiKeyManagement;
               break;
-            case "Audit log":
+            case "Audit logs & SIEM":
               prefetchHandler = prefetchAuditLogs;
               break;
             case "Verified pages":

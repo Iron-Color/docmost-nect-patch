@@ -3,6 +3,7 @@ import {
   IconCaretRightFilled,
   IconCheckbox,
   IconCode,
+  IconApi,
   IconH1,
   IconH2,
   IconH3,
@@ -63,6 +64,14 @@ import { insertBaseEmbedBlock } from "@/features/editor/components/base-embed/in
 
 const CommandGroups: SlashMenuGroupedItemsType = {
   basic: [
+    {
+      title: "OpenAPI",
+      description: "Display API documentation from JSON or YAML.",
+      searchTerms: ["openapi", "swagger", "api", "json", "yaml"],
+      icon: IconApi,
+      command: ({ editor, range }: CommandProps) =>
+        editor.chain().focus().deleteRange(range).setOpenApi().run(),
+    },
     {
       title: "Text",
       description: "Just start typing with plain text.",

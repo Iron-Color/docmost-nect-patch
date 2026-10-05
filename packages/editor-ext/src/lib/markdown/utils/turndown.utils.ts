@@ -36,8 +36,21 @@ export function htmlToMarkdown(html: string): string {
     video,
     footnoteRef,
     footnotesList,
+    openApi,
   ]);
   return turndownService.turndown(html).replaceAll('<br>', ' ');
+}
+
+function openApi(turndownService: _TurndownService) {
+  turndownService.addRule('openapi', {
+    filter: (node: HTMLElement) => node.nodeName === 'DIV' && node.getAttribute('data-type') === 'openapi',
+    replacement: (_content: string, node: HTMLElement) => {
+      const source = node.querySelector('code')?.textContent ?? '';
+      const longest = Math.max(2, ...(source.match(/`+/g) ?? []).map((run) => run.length));
+      const fence = '`'.repeat(longest + 1);
+      return `\n\n${fence}openapi\n${source}\n${fence}\n\n`;
+    },
+  });
 }
 
 function listParagraph(turndownService: _TurndownService) {
