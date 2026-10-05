@@ -24,20 +24,22 @@ Docmost Community Editionへ、複数のユーザー所有スペースと共有�
 | 再現可能なリリース         | Dockerイメージ、Gitタグ、ソースコミットを同じSHAへ固定します                         |
 | 秘密情報検査               | プッシュとPull RequestのたびにGitleaksを実行します                                   |
 | Discord限定登録            | サーバーと複数ロールのOR/AND条件をOAuthで確認してアカウントを作成できます            |
+| OpenAPIドキュメント         | JSON／YAMLのAPI仕様をページ内に保存し、API一覧・引数・レスポンスを閲覧できます       |
 
 リアルタイム共同編集、Draw.io、Excalidraw、Mermaid、通常スペース、
 検索、履歴、コメントなど、Docmost Community Edition本来の機能も利用できます。
 
 ## 現在のリリース
 
-- バージョン: [v0.95.0-nect.3](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.95.0-nect.3)
-- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.95.0-nect.3
+- バージョン: [v0.96.0-nect.1](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.1)
+- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.96.0-nect.1
 - 対応CPU: linux/amd64、linux/arm64
-- ベースにした公式コミット: [5b854645](https://github.com/docmost/docmost/commit/5b854645615026d642c5e1735a3eafc59a3211f2)
+- ベースにした公式リリース: [v0.96.0](https://github.com/docmost/docmost/releases/tag/v0.96.0)（[9b3e5dd3](https://github.com/docmost/docmost/commit/9b3e5dd3dc21588fa20c02c5b8646d2f46ee73af)）
+- 配布イメージのソースコミット: [05ac07a8](https://github.com/Iron-Color/docmost-nect-patch/commit/05ac07a83e40819791979d9ef93c3df363a619db)
 
 本番環境では、タグよりも次の固定ダイジェストを推奨します。
 
-    ghcr.io/iron-color/docmost-nect-patch@sha256:01f59b46eec640a9ed9a996f685026f2882085a82c1680477a460fe50f83f7cf
+    ghcr.io/iron-color/docmost-nect-patch@sha256:a4973a7bb2e8618a4cac388fe70cba2ca0d4c45b80916c55740e47ee43c3a65c
 
 ## 既存環境への導入
 
