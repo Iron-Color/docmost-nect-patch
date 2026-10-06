@@ -31,18 +31,19 @@ Docmost Community Editionへ、複数のユーザー所有スペースと共有�
 
 ## 現在のリリース
 
-- バージョン: [v0.96.0-nect.2](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.2)
-- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.96.0-nect.2
+- バージョン: [v0.96.0-nect.3](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.3)
+- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.96.0-nect.3
 - 対応CPU: linux/amd64、linux/arm64
 - ベースにした公式リリース: [v0.96.0](https://github.com/docmost/docmost/releases/tag/v0.96.0)（[9b3e5dd3](https://github.com/docmost/docmost/commit/9b3e5dd3dc21588fa20c02c5b8646d2f46ee73af)）
-- 配布イメージのソースコミット: [202b5e35](https://github.com/Iron-Color/docmost-nect-patch/commit/202b5e35c207210733bccdc0f3e554d7a51fdbde)
+- 配布イメージのソースコミット: [7c7fafcc](https://github.com/Iron-Color/docmost-nect-patch/commit/7c7fafcc29d4cc38dd117cf80a3c0c114f7cf144)
 
-v0.96.0-nect.2では、公式版・旧派生版から更新するときのDB移行順序エラーを
-修正しました。v0.96.0-nect.1の代わりに、この修正版を利用してください。
+v0.96.0-nect.3では、OpenAPIの表示枠を内容に合わせて伸縮させ、枠内の縦スクロールを
+解消しました。v0.96.0-nect.2で修正した、公式版・旧派生版から更新するときの
+DB移行順序エラーへの対応も含みます。v0.96.0-nect.1の代わりに最新版を利用してください。
 
 本番環境では、タグよりも次の固定ダイジェストを推奨します。
 
-    ghcr.io/iron-color/docmost-nect-patch@sha256:4044abc67a637e4bbc049003863859e18ffce0d574fe510675f63164421a9b69
+    ghcr.io/iron-color/docmost-nect-patch@sha256:5ed738615d0143e62ccb2d36711430f5bb8c9d5b3728397a49c9cf8f696f2eff
 
 ## 既存環境への導入
 

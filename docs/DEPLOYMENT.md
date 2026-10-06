@@ -3,9 +3,10 @@
 この手順は、Docker Composeで稼働しているDocmost Community Editionを
 Docmost Nect Patchへ更新する場合を対象にしています。
 
-対象リリースは[v0.96.0-nect.2](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.2)です。
+対象リリースは[v0.96.0-nect.3](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.3)です。
 公式Docmost v0.96.0と、ページ内のOpenAPIドキュメント表示を含みます。
 v0.96.0-nect.1で発生したDB移行順序エラーを修正しています。
+OpenAPIの表示枠は内容に合わせて高さが変わり、ページ全体をスクロールして閲覧できます。
 
 ## 1. バックアップ
 
@@ -20,7 +21,7 @@ docmostサービスのimageを次の固定ダイジェストへ変更します�
 
     services:
       docmost:
-        image: ghcr.io/iron-color/docmost-nect-patch@sha256:4044abc67a637e4bbc049003863859e18ffce0d574fe510675f63164421a9b69
+        image: ghcr.io/iron-color/docmost-nect-patch@sha256:5ed738615d0143e62ccb2d36711430f5bb8c9d5b3728397a49c9cf8f696f2eff
 
 db、redis、volumes、APP_SECRET、データベースのパスワードは変更しません。
 docmostサービスにbuild設定がある場合は削除します。
