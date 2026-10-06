@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import { envPath, normalizePostgresUrl } from '../common/helpers';
 import { PostgresJSDialect } from 'kysely-postgres-js';
 import postgres from 'postgres';
+import { migrationOptions } from './migration-options';
 
 dotenv.config({ path: envPath });
 
@@ -19,6 +20,7 @@ const db = new Kysely<any>({
 
 const migrator = new Migrator({
   db,
+  ...migrationOptions,
   provider: new FileMigrationProvider({
     fs,
     path,

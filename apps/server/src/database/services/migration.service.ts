@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import { Migrator, FileMigrationProvider } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB } from '@docmost/db/types/kysely.types';
+import { migrationOptions } from '../migration-options';
 
 @Injectable()
 export class MigrationService {
@@ -14,6 +15,7 @@ export class MigrationService {
   async migrateToLatest(): Promise<void> {
     const migrator = new Migrator({
       db: this.db,
+      ...migrationOptions,
       provider: new FileMigrationProvider({
         fs,
         path,
@@ -23,7 +25,7 @@ export class MigrationService {
 
     const { error, results } = await migrator.migrateToLatest();
 
-    if (results && results.length === 0) {
+    if (!error && results && results.length === 0) {
       this.logger.log('No pending database migrations');
       return;
     }
