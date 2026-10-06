@@ -42,6 +42,8 @@ export default function OpenApiDocument({
         .swagger-ui .opblock-summary-path { overflow-wrap: anywhere; }
         .swagger-ui .scheme-container { box-shadow: none; margin: 0; padding: 12px 0; }
         .swagger-ui .download-url-wrapper { display: none; }
+        .swagger-ui .highlight-code > .microlight,
+        .swagger-ui section.models .models-scroll { max-height: none; overflow-y: visible; }
       `}
             </style>
             <SwaggerUI
