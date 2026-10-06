@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { randomBytes } = require('node:crypto');
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { Kysely, Migrator, FileMigrationProvider, sql } = require('kysely');
+const { Kysely, Migrator, FileMigrationProvider } = require('kysely');
 const { PostgresJSDialect } = require('kysely-postgres-js');
 const postgres = require('postgres');
 const { migrationOptions } = require('../dist/database/migration-options');
@@ -26,7 +26,9 @@ async function main() {
     fs, path, migrationFolder: path.join(__dirname, '../dist/database/migrations'),
   }).getMigrations();
   for (const name of [...downstream, ...upstream096]) assert.ok(migrations[name], name);
-  const subset = (exclude) => Object.fromEntries(Object.entries(migrations).filter(([name]) => !exclude.has(name)));
+  // Keep historical fixtures fixed when future upstream migrations are added.
+  const official096 = Object.fromEntries(Object.entries(migrations).filter(([name]) => name <= '20260904T171920-public-spaces' && !downstream.has(name)));
+  const fork095 = Object.fromEntries(Object.entries(migrations).filter(([name]) => name <= '20260825T022612-oauth' || downstream.has(name)));
   const provider = (items) => ({ getMigrations: async () => items });
   const migrate = async (db, items, options = {}) => {
     const result = await new Migrator({ db, provider: provider(items), ...options }).migrateToLatest();
@@ -47,7 +49,7 @@ async function main() {
         let page;
         let space;
         if (fixture !== 'fresh') {
-          await migrate(db, fixture === 'official-0.96' ? subset(downstream) : subset(upstream096));
+          await migrate(db, fixture === 'official-0.96' ? official096 : fork095);
           existing = await history(db);
           const workspace = await db.insertInto('workspaces').values({ name: 'Migration fixture', hostname: 'upgrade-fixture' }).returning('id').executeTakeFirstOrThrow();
           const user = await db.insertInto('users').values({ name: 'Fixture user', email: 'upgrade@example.invalid', workspace_id: workspace.id }).returning('id').executeTakeFirstOrThrow();
@@ -61,7 +63,8 @@ async function main() {
           assert.deepEqual(await history(db), existing, 'Failure must happen before any migration executes');
         }
         const upgraded = await migrate(db, migrations, migrationOptions);
-        const expected = fixture === 'fresh' ? Object.keys(migrations) : fixture === 'official-0.96' ? [...downstream] : [...upstream096];
+        const existingNames = new Set(existing.map(item => item.name));
+        const expected = Object.keys(migrations).filter(name => !existingNames.has(name));
         assert.deepEqual(upgraded.results.map(item => item.migrationName).sort(), expected.sort());
         const after = await history(db);
         for (const item of existing) assert.deepEqual(after.find(row => row.name === item.name), item, 'Previously applied history must remain unchanged');
