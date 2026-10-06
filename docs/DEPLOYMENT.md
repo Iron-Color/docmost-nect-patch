@@ -3,8 +3,9 @@
 この手順は、Docker Composeで稼働しているDocmost Community Editionを
 Docmost Nect Patchへ更新する場合を対象にしています。
 
-対象リリースは[v0.96.0-nect.1](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.1)です。
+対象リリースは[v0.96.0-nect.2](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.2)です。
 公式Docmost v0.96.0と、ページ内のOpenAPIドキュメント表示を含みます。
+v0.96.0-nect.1で発生したDB移行順序エラーを修正しています。
 
 ## 1. バックアップ
 
@@ -19,7 +20,7 @@ docmostサービスのimageを次の固定ダイジェストへ変更します�
 
     services:
       docmost:
-        image: ghcr.io/iron-color/docmost-nect-patch@sha256:a4973a7bb2e8618a4cac388fe70cba2ca0d4c45b80916c55740e47ee43c3a65c
+        image: ghcr.io/iron-color/docmost-nect-patch@sha256:4044abc67a637e4bbc049003863859e18ffce0d574fe510675f63164421a9b69
 
 db、redis、volumes、APP_SECRET、データベースのパスワードは変更しません。
 docmostサービスにbuild設定がある場合は削除します。
@@ -36,6 +37,8 @@ docmostサービスにbuild設定がある場合は削除します。
 初めてこの派生版を導入する場合は、is_user_owned列、Discord登録用テーブルと
 索引も追加されます。
 既存のスペースの種類、ページ、ユーザー、権限、添付ファイルは維持されます。
+適用済みの移行履歴は保持したまま、未適用の更新だけを実行します。
+移行ファイルの名前変更や、DBの移行履歴の削除は不要です。
 
 更新後、一般ユーザーでログインし、Spaces画面にCreate personal spaceが
 表示されることを確認してください。

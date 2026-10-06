@@ -31,15 +31,18 @@ Docmost Community Editionへ、複数のユーザー所有スペースと共有�
 
 ## 現在のリリース
 
-- バージョン: [v0.96.0-nect.1](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.1)
-- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.96.0-nect.1
+- バージョン: [v0.96.0-nect.2](https://github.com/Iron-Color/docmost-nect-patch/releases/tag/v0.96.0-nect.2)
+- Dockerイメージ: ghcr.io/iron-color/docmost-nect-patch:v0.96.0-nect.2
 - 対応CPU: linux/amd64、linux/arm64
 - ベースにした公式リリース: [v0.96.0](https://github.com/docmost/docmost/releases/tag/v0.96.0)（[9b3e5dd3](https://github.com/docmost/docmost/commit/9b3e5dd3dc21588fa20c02c5b8646d2f46ee73af)）
-- 配布イメージのソースコミット: [05ac07a8](https://github.com/Iron-Color/docmost-nect-patch/commit/05ac07a83e40819791979d9ef93c3df363a619db)
+- 配布イメージのソースコミット: [202b5e35](https://github.com/Iron-Color/docmost-nect-patch/commit/202b5e35c207210733bccdc0f3e554d7a51fdbde)
+
+v0.96.0-nect.2では、公式版・旧派生版から更新するときのDB移行順序エラーを
+修正しました。v0.96.0-nect.1の代わりに、この修正版を利用してください。
 
 本番環境では、タグよりも次の固定ダイジェストを推奨します。
 
-    ghcr.io/iron-color/docmost-nect-patch@sha256:a4973a7bb2e8618a4cac388fe70cba2ca0d4c45b80916c55740e47ee43c3a65c
+    ghcr.io/iron-color/docmost-nect-patch@sha256:4044abc67a637e4bbc049003863859e18ffce0d574fe510675f63164421a9b69
 
 ## 既存環境への導入
 
