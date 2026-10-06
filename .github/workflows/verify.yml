@@ -11,6 +11,20 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: migration-test-only
+          POSTGRES_DB: docmost_migration_tests
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d docmost_migration_tests"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,6 +37,10 @@ jobs:
       - run: pnpm --filter @docmost/editor-ext run build
       - run: pnpm --filter @docmost/base-formula run build
       - run: pnpm --filter server run build
+      - name: Verify official, downstream, and fresh database upgrades
+        env:
+          TEST_DATABASE_URL: postgresql://postgres:migration-test-only@127.0.0.1:5432/docmost_migration_tests
+        run: node apps/server/test/migration-upgrade.cjs
       - run: pnpm --filter client run build
       - run: pnpm --filter client run test
       - name: Check fork features and page serialization
